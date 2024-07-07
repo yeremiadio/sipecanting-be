@@ -4,7 +4,7 @@
 - ExpressJS
 - Typescript
 - Prisma ORM
-- PostgreSQL
+- PostgreSQL (Docker)
 
 ## **Development Configuration :**
 `npm run dev` - Running in local development using **nodemon**
