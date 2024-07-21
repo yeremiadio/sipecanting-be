@@ -9,7 +9,7 @@ export const getAllUsers = async (): Promise<IUser[]> => {
 export const createUserDetail = async (data: UserDetail) => {
     return prisma.userDetail.create({
         data: {
-            age: data.age,
+            age: Number(data.age),
             phoneNumber: data.phoneNumber,
             userId: data.userId,
         }

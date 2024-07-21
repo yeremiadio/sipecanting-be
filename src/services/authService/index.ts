@@ -19,5 +19,11 @@ export const loginUser = async (email: string, password: string) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
         throw new Error('Invalid email or password');
     }
-    return jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+    return {
+        token: jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' }),
+        id: user.id,
+        email: user.email,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+    };
 };
