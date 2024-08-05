@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "nodemon",
-    "postinstall": "npx prisma generate && npx prisma migrate deploy",
+    "start": "node server.ts",
     "prisma:vercel-build": "npx prisma generate && npx prisma migrate deploy",
     "prisma:migrate-dev": "npx prisma migrate dev",
     "prisma:migrate": "npx prisma migrate deploy",
