@@ -8,14 +8,15 @@
         "module": "commonjs",
         "strict": true,
         "esModuleInterop": true,
+        "moduleResolution": "node",
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "outDir": "./dist",
+        "outDir": "dist",
         "baseUrl": "./src",
         "paths": {
             "@/*": [
                 "src/*"
-            ]
+            ],
         },
     },
     "include": [
