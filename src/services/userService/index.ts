@@ -12,6 +12,7 @@ export const createUserDetail = async (data: UserDetail) => {
             age: Number(data.age),
             phoneNumber: data.phoneNumber,
             userId: data.userId,
+            fullName: data.fullName,
         }
     });
 };
