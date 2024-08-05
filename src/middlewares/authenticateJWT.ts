@@ -1,8 +1,8 @@
-import { getUserById } from '@/services/userService';
+import { getUserById } from '../services/userService';
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { IUser } from '@/types/user';
-import { Nullable } from '@/types';
+import { IUser } from '../types/user';
+import { Nullable } from '../types';
 
 export interface IAuthRequest extends Request {
     user?: Nullable<IUser>;
