@@ -1,4 +1,4 @@
-import prisma from 'utils/prisma';
+import prisma from '@/utils/prisma';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 

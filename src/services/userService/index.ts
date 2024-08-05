@@ -1,6 +1,6 @@
 import { UserDetail } from "@prisma/client";
-import { IUser } from "types/user";
-import prisma from "utils/prisma";
+import { IUser } from "@/types/user";
+import prisma from "@/utils/prisma";
 
 export const getAllUsers = async (): Promise<IUser[]> => {
     return prisma.user.findMany();

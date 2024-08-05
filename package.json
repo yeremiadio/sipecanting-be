@@ -2,7 +2,8 @@
   "name": "sipecanting-be",
   "version": "1.0.0",
   "description": "",
-  "main": "server.ts",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon",
     "start": "nodemon",

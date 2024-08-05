@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { IAuthRequest } from 'middlewares/authenticateJWT';
-import { createUserDetail, getAllUsers, getUserById as getUserByIdService, getUserDetailById } from "services/userService";
-import { Nullable } from 'types';
-import { IUser } from 'types/user';
-import { formatResponse } from 'utils/formatResponse';
+import { IAuthRequest } from '@/middlewares/authenticateJWT';
+import { createUserDetail, getAllUsers, getUserById as getUserByIdService, getUserDetailById } from "@/services/userService";
+import { Nullable } from '@/types';
+import { IUser } from '@/types/user';
+import { formatResponse } from '@/utils/formatResponse';
 
 export const getUsers = async (_: Request, res: Response) => {
     try {
