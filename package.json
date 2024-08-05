@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon",
     "start": "nodemon",
-    "build": "rimraf dist && tsc && npx prisma generate",
+    "build": "rimraf dist && tsc",
     "postinstall": "npx prisma generate && npx prisma migrate deploy",
     "prisma:vercel-build": "npx prisma generate && npx prisma migrate deploy",
     "prisma:migrate-dev": "npx prisma migrate dev",
