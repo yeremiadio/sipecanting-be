@@ -15,6 +15,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', router);
 
+app.get('/', (_, res) => {
+    res.send('Hello World!')
+})
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
