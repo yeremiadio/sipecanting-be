@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node dist/index.js",
+    "postinstall": "prisma generate",
     "build": "rimraf dist && tsc",
     "prisma:migrate-dev": "npx prisma migrate dev",
     "prisma:migrate": "npx prisma migrate deploy",
