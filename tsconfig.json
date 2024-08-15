@@ -14,15 +14,22 @@
         "outDir": "dist",
         "baseUrl": "./src",
         "paths": {
-            "*": ["node_modules/*", "src/types/*"],
+            "*": [
+                "node_modules/*",
+                "src/types/*"
+            ],
             "@/*": [
                 "*"
             ],
         },
     },
     "include": [
-        "src/**/*"
-, "src/index.ts"    ],
+        "src"
+    ],
+    "tsc-alias": {
+        "resolveFullPaths": true,
+        "verbose": false
+    },
     "exclude": [
         "node_modules",
         "dist"

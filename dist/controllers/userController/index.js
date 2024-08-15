@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserDetailByUserId = exports.createUserDetailByUserId = exports.getUserById = exports.getUsers = void 0;
-const userService_1 = require("@/services/userService");
-const formatResponse_1 = require("@/utils/formatResponse");
+const userService_1 = require("../../services/userService/index.js");
+const formatResponse_1 = require("../../utils/formatResponse.js");
 const getUsers = async (_, res) => {
     try {
         const users = await (0, userService_1.getAllUsers)();
