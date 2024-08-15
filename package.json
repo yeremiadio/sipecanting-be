@@ -6,22 +6,9 @@
   "scripts": {
     "dev": "nodemon",
     "dev-prisma": "rm -rf package-lock.json node_modules/ dist/ prisma/migrations/ prisma/generated/ && npm i && npx prisma generate && npx prisma migrate dev && nodemon",
-    "start": "node dist/index.js",
-    "build": "rimraf dist && tsc",
-    "postinstall": "npx prisma generate && npx prisma migrate deploy",
-    "build-clean": "npm i && npm run postinstall && npm run build",
-    "prisma:vercel-build": "npx prisma generate && npx prisma migrate deploy",
     "prisma:migrate-dev": "npx prisma migrate dev",
-    "prisma:migrate": "npx prisma migrate deploy",
-    "ts.check": "tsc --project tsconfig.json",
-    "add-build": "git add dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
