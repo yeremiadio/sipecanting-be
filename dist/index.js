@@ -16,6 +16,9 @@ app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use('/api', routes_1.default);
+app.get('/', (_, res) => {
+    res.send('Hello World!');
+});
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
