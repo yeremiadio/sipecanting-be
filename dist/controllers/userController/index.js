@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserDetailByUserId = exports.createUserDetailByUserId = exports.getUserById = exports.getUsers = void 0;
+exports.getUserDetailByUserId = exports.updateUserDetailByUserId = exports.createUserDetailByUserId = exports.getUserById = exports.getUsers = void 0;
 const userService_1 = require("../../services/userService/index.js");
 const formatResponse_1 = require("../../utils/formatResponse.js");
 const getUsers = async (_, res) => {
@@ -49,15 +49,33 @@ const createUserDetailByUserId = async (req, res) => {
         const user = await (0, userService_1.getUserById)(userId);
         if (!user)
             return res.status(400).json({ error: 'Invalid user ID' });
-        const userDetail = await (0, userService_1.createUserDetail)({ userId: user.id, ...req.body });
+        const userDetail = await (0, userService_1.createUserDetail)({ userId: Number(user.id), ...req.body });
         res.status(201).json(userDetail);
     }
     catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
-        throw error;
+        console.error('Error:', error);
     }
 };
 exports.createUserDetailByUserId = createUserDetailByUserId;
+const updateUserDetailByUserId = async (req, res) => {
+    try {
+        const userId = Number(req.params.userId);
+        if (!userId) {
+            return res.status(400).json({ error: 'Invalid user ID' });
+        }
+        const user = await (0, userService_1.getUserById)(userId);
+        if (!user)
+            return res.status(400).json({ error: 'Invalid user ID' });
+        const userDetail = await (0, userService_1.updateUserDetail)(userId, { ...req.body });
+        res.status(201).json(userDetail);
+    }
+    catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+        console.error('Error:', error);
+    }
+};
+exports.updateUserDetailByUserId = updateUserDetailByUserId;
 const getUserDetailByUserId = async (req, res) => {
     try {
         const userId = parseInt(req.params.userId, 10); // Parse userId from URL params

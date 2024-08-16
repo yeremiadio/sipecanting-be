@@ -7,5 +7,6 @@ userRoutes.get('/', userController_1.getUsers);
 userRoutes.get('/:userId', userController_1.getUserById);
 userRoutes.get('/detail/:userId', userController_1.getUserDetailByUserId);
 userRoutes.post('/detail', userController_1.createUserDetailByUserId);
+userRoutes.put('/detail/:userId', userController_1.updateUserDetailByUserId);
 exports.default = userRoutes;
 //# sourceMappingURL=index.js.map
