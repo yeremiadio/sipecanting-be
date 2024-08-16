@@ -7,6 +7,6 @@ userRoutes.get('/', getUsers);
 userRoutes.get('/:userId', getUserById);
 userRoutes.get('/detail/:userId', getUserDetailByUserId);
 userRoutes.post('/detail', createUserDetailByUserId);
-userRoutes.put('/detail/:userId', updateUserDetailByUserId);
+userRoutes.put('/detail-update/:userId', updateUserDetailByUserId);
 
 export default userRoutes;
