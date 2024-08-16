@@ -2,12 +2,15 @@ import { Request, Response } from 'express'
 import { createArticle as createArticleService, deleteArticleById as deleteArticleByIdService, getArticleById as getArticleByIdService, getArticles as getArticlesService } from '@/services/articleService'
 import { formatResponse } from '@/utils/formatResponse';
 import { Article } from '@prisma/client';
+import { IAuthRequest } from '@/middlewares/authenticateJWT';
 
-export const createArticle = async (req: Request, res: Response) => {
+export const createArticle = async (req: IAuthRequest, res: Response) => {
     try {
-        const { file, content, title } = req.body;
-        const group = await createArticleService({ content, title, file });
-        res.status(201).json(group);
+        if (!req.user || !req.user.id) res.status(400).json({ error: "User is missing! Please try again" })
+        const userId = req.user?.id ?? 0;
+        const { content, title } = req.body;
+        const data = await createArticleService({ content, title, file: req.file, authorId: userId });
+        res.status(201).json(data);
     } catch (error) {
         console.log(error)
         res.status(400).json({ error: "Failed! Please try again." });
@@ -47,6 +50,7 @@ export const deleteArticleById = async (req: Request, res: Response) => {
         const data = await deleteArticleByIdService(Number(id));
         res.json(data);
     } catch (error) {
-        res.status(400).json({ error: "Failed Please try again" });
+        console.log(error);
+        res.status(400).json({ error: "Article not found! Please try again" });
     }
 }

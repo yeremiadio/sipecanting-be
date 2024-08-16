@@ -16,6 +16,6 @@ router.use('/groups', authenticateJWT, groupRoutes);
 router.use('/articles', authenticateJWT, articleRoutes);
 router.use('/messages', authenticateJWT, messageRoutes);
 router.use('/auth', authRoutes);
-router.use('/files', authenticateJWT, fileRoutes);
+router.use('/files', fileRoutes);
 
 export default router;

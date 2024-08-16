@@ -14,7 +14,7 @@ const shortenUUID = (uuid: string): string => {
  */
 export const generateUniqueFilename = (originalName: string): string => {
     const extension = path.extname(originalName); // Get the original file extension
-    const baseName = path.basename(originalName, extension); // Get the file name without extension
+    const baseName = path.basename(originalName, extension).replace(/ /g, "_"); // Get the file name without extension
     const fullUUID = uuidv4(); // Generate a UUID
     const shortenedUUID = shortenUUID(fullUUID); // Shorten the UUID
     // Combine original name, shortened UUID, timestamp, and extension

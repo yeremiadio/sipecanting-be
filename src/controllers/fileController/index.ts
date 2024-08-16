@@ -5,7 +5,7 @@ import { Request, Response } from 'express'
 
 export const getFile = async (req: Request, res: Response) => {
     try {
-        const fileName = req.params.fileName;
+        const fileName = req.params.filename;
         const fileData = await getFileService(fileName);
         res.setHeader('Content-Type', 'application/octet-stream');
         res.send(fileData);

@@ -11,8 +11,8 @@ const port = process.env.PORT ?? 8080;
 
 // Configure CORS to allow all origins
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', router);
 
 app.listen(port, () => {
