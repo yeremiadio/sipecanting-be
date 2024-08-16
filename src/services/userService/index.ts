@@ -16,6 +16,17 @@ export const createUserDetail = async (data: UserDetail) => {
         }
     });
 };
+export const updateUserDetail = async (userId: number, data: UserDetail) => {
+    return prisma.userDetail.update({
+        where: { userId },
+        data: {
+            age: Number(data.age),
+            phoneNumber: data.phoneNumber,
+            fullName: data.fullName,
+            shortName: data.shortName,
+        }
+    });
+};
 
 export const getUserDetailById = async (userId: number) => {
     return prisma.userDetail.findUnique({ where: { userId: userId } });

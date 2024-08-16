@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { IAuthRequest } from '@/middlewares/authenticateJWT';
-import { createUserDetail, getAllUsers, getUserById as getUserByIdService, getUserDetailById } from "@/services/userService";
+import { createUserDetail, getAllUsers, getUserById as getUserByIdService, getUserDetailById, updateUserDetail } from "@/services/userService";
 import { Nullable } from '@/types';
 import { IUser } from '@/types/user';
 import { formatResponse } from '@/utils/formatResponse';
@@ -47,11 +47,26 @@ export const createUserDetailByUserId = async (req: IAuthRequest, res: Response)
         }
         const user = await getUserByIdService(userId);
         if (!user) return res.status(400).json({ error: 'Invalid user ID' });
-        const userDetail = await createUserDetail({ userId: user.id, ...req.body });
+        const userDetail = await createUserDetail({ userId: Number(user.id), ...req.body });
         res.status(201).json(userDetail);
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
-        throw error;
+        console.error('Error:', error);
+    }
+};
+export const updateUserDetailByUserId = async (req: IAuthRequest, res: Response) => {
+    try {
+        const userId = Number(req.params.userId);
+        if (!userId) {
+            return res.status(400).json({ error: 'Invalid user ID' });
+        }
+        const user = await getUserByIdService(userId);
+        if (!user) return res.status(400).json({ error: 'Invalid user ID' });
+        const userDetail = await updateUserDetail(userId, { ...req.body });
+        res.status(201).json(userDetail);
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+        console.error('Error:', error);
     }
 };
 
