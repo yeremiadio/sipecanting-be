@@ -27,30 +27,30 @@ model User {
 }
 
 model UserDetail {
-  id               Int       @id @default(autoincrement())
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @default(now())
-  fullName         String?   @map("full_name")
-  shortName        String?   @map("short_name")
-  phoneNumber      String?   @map("phone_number")
-  age              Int?
-  user             User?     @relation(fields: [userId], references: [id])
-  userId           Int       @unique @map("user_id")
-  Message          Message[]
-  profileImageName String?   @map("profile_image_name")
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
+  fullName     String?   @map("full_name")
+  shortName    String?   @map("short_name")
+  phoneNumber  String?   @map("phone_number")
+  age          Int?
+  user         User?     @relation(fields: [userId], references: [id])
+  userId       Int       @unique @map("user_id")
+  Message      Message[]
+  profileImage String?   @map("profile_image")
 
   @@map("user_details")
 }
 
 model Article {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now())
-  title          String   @map("title")
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now())
+  title          String    @map("title")
   content        String
-  thumbnailImage String?  @map("thumbnail_image")
-  authorId       Int      @map("author_id")
-  user           User     @relation(fields: [authorId], references: [id])
+  thumbnailImage String?   @map("thumbnail_image")
+  authorId       Int       @map("author_id")
+  user           User      @relation(fields: [authorId], references: [id])
   categoryId     Int?      @map("category_id")
   category       Category? @relation(fields: [categoryId], references: [id])
 }
@@ -81,11 +81,4 @@ model Message {
   group      Group?      @relation(fields: [groupId], references: [id])
   userId     Int
   groupId    Int
-}
-
-model File {
-  filename  String   @unique
-  data      Bytes
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
 }

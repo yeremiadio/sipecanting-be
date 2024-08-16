@@ -4,12 +4,12 @@ import {
     createArticle, deleteArticleById, getArticleById, getArticles,
     updateArticleById
 } from '@/controllers/articleController';
-import multer from 'multer';
+import upload from '@/utils/multerConfig';
 
 const articleRoutes = Router();
-const upload = multer()
-articleRoutes.post('/', upload.single('file'), createArticle);
-articleRoutes.put('/:id', upload.single('file'), updateArticleById);
+
+articleRoutes.post('/',upload.single('thumbnailFile'), createArticle);
+articleRoutes.put('/:id',upload.single('thumbnailFile'), updateArticleById);
 articleRoutes.delete('/:id', deleteArticleById);
 articleRoutes.get('/', getArticles);
 articleRoutes.get('/:id', getArticleById);

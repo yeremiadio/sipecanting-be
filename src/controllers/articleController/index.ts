@@ -9,7 +9,7 @@ export const createArticle = async (req: IAuthRequest, res: Response) => {
         if (!req.user || !req.user.id) res.status(400).json({ error: "User is missing! Please try again" })
         const userId = req.user?.id ?? 0;
         const { content, title, categoryId } = req.body;
-        const data = await createArticleService({ content, title, file: req.file, authorId: userId, categoryId });
+        const data = await createArticleService({ content, title, authorId: userId, categoryId }, req.file!);
         res.status(201).json(data);
     } catch (error) {
         console.log(error)
@@ -18,9 +18,12 @@ export const createArticle = async (req: IAuthRequest, res: Response) => {
 }
 export const updateArticleById = async (req: Request, res: Response) => {
     try {
+        const { content, title, categoryId } = req.body
         const articleId = req.params.id;
         if (!articleId) res.status(404).json({ error: "Article not found." });
-        const data = await updateArticleService(Number(articleId), { ...req.body, file: req.file });
+        const data = await updateArticleService(Number(articleId), {
+            content, title, categoryId
+        }, req.file!)
         res.status(200).json(data);
     } catch (error) {
         console.log(error)
