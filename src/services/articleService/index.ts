@@ -3,9 +3,9 @@ import prisma from "@/utils/prisma";
 import { Article } from "@prisma/client";
 import { storeFile } from "../fileService";
 
-type TArticleWithFile = Pick<Article, 'content' | 'title' | 'authorId'> & Nullable<{ file: Express.Multer.File | undefined }>
+type TArticleWithFile = Pick<Article, 'content' | 'title' | 'authorId' | 'categoryId'> & Nullable<{ file: Express.Multer.File | undefined }>
 
-export const createArticle = async ({ content, title, file, authorId }: TArticleWithFile) => {
+export const createArticle = async ({ content, title, file, authorId, categoryId }: TArticleWithFile) => {
     let filename = null;
     // If a file is uploaded, store it and get the filename
     if (file) {
@@ -18,6 +18,7 @@ export const createArticle = async ({ content, title, file, authorId }: TArticle
             content,
             title,
             authorId,
+            categoryId,
             thumbnailImage: filename,
         },
     });

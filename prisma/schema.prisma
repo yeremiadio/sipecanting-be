@@ -22,6 +22,7 @@ model User {
   UserDetail UserDetail?
   groups     Group[]     @relation("UserGroups")
   articles   Article[]
+
   @@map("users")
 }
 
@@ -50,6 +51,16 @@ model Article {
   thumbnailImage String?  @map("thumbnail_image")
   authorId       Int      @map("author_id")
   user           User     @relation(fields: [authorId], references: [id])
+  categoryId     Int      @map("category_id")
+  category       Category @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @map("category_name")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  Article   Article[]
 }
 
 model Group {

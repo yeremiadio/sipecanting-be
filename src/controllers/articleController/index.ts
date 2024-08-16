@@ -8,8 +8,8 @@ export const createArticle = async (req: IAuthRequest, res: Response) => {
     try {
         if (!req.user || !req.user.id) res.status(400).json({ error: "User is missing! Please try again" })
         const userId = req.user?.id ?? 0;
-        const { content, title } = req.body;
-        const data = await createArticleService({ content, title, file: req.file, authorId: userId });
+        const { content, title, categoryId } = req.body;
+        const data = await createArticleService({ content, title, file: req.file, authorId: userId, categoryId });
         res.status(201).json(data);
     } catch (error) {
         console.log(error)
