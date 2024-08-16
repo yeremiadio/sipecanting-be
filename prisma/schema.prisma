@@ -21,35 +21,61 @@ model User {
   updatedAt  DateTime    @updatedAt
   UserDetail UserDetail?
   groups     Group[]     @relation("UserGroups")
+  Article    Article?
 
   @@map("users")
 }
 
 model UserDetail {
-  id          Int       @id @default(autoincrement())
-  fullName    String?   @map("full_name")
-  phoneNumber String?   @map("phone_number")
-  age         Int?
-  user        User?     @relation(fields: [userId], references: [id])
-  userId      Int       @unique @map("user_id")
-  Message     Message[]
+  id               Int       @id @default(autoincrement())
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now())
+  fullName         String?   @map("full_name")
+  shortName        String?   @map("short_name")
+  phoneNumber      String?   @map("phone_number")
+  age              Int?
+  user             User?     @relation(fields: [userId], references: [id])
+  userId           Int       @unique @map("user_id")
+  Message          Message[]
+  profileImageName String?   @map("profile_image_name")
 
   @@map("user_details")
 }
 
+model Article {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
+  title          String   @map("title")
+  content        String
+  thumbnailImage String?  @map("thumbnail_image")
+  authorId       Int      @unique @map("author_id")
+  User           User?    @relation(fields: [authorId], references: [id])
+}
+
 model Group {
-  id       Int       @id @default(autoincrement())
-  name     String
-  messages Message[]
-  users    User[]    @relation("UserGroups")
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  name      String
+  messages  Message[]
+  users     User[]    @relation("UserGroups")
 }
 
 model Message {
   id         Int         @id @default(autoincrement())
   content    String
   createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now())
   userDetail UserDetail? @relation(fields: [userId], references: [id])
   group      Group?      @relation(fields: [groupId], references: [id])
   userId     Int
   groupId    Int
+}
+
+model File {
+  filename  String   @unique
+  data      Bytes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
