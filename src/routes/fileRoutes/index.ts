@@ -1,11 +1,12 @@
 import { Router } from 'express';
-import { register, login } from '@/controllers/authController';
 import { getFile, storeMultipleFiles, storeSingleFile } from '@/controllers/fileController';
+import multer from 'multer';
 
 const fileRoutes = Router();
+const upload = multer();
 
-fileRoutes.post('/upload', storeSingleFile);
-fileRoutes.post('/upload-multiples', storeMultipleFiles);
+fileRoutes.post('/upload', upload.single('file'), storeSingleFile);
+fileRoutes.post('/upload-multiples', upload.array('files'), storeMultipleFiles);
 fileRoutes.post('/:fileName', getFile);
 
 export default fileRoutes;

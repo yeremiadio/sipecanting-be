@@ -50,7 +50,7 @@ model Article {
   content        String
   thumbnailImage String?  @map("thumbnail_image")
   authorId       Int      @unique @map("author_id")
-  User           User?    @relation(fields: [authorId], references: [id])
+  user           User?    @relation(fields: [authorId], references: [id])
 }
 
 model Group {

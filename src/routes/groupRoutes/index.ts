@@ -11,6 +11,5 @@ groupRoutes.delete('/:id', deleteGroupById);
 groupRoutes.put('/:id/members', updateGroupMembers);
 groupRoutes.get('/', getGroups);
 groupRoutes.get('/:id', getGroupById);
-groupRoutes.get('/:id', getGroupById);
 
 export default groupRoutes;
