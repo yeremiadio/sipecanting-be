@@ -12,6 +12,7 @@ export const createArticle = async ({ content, title, file, authorId }: TArticle
         const storedFile = await storeFile(file);
         filename = storedFile.filename;
     }
+    console.log(authorId)
     const data = await prisma.article.create({
         data: {
             content,
