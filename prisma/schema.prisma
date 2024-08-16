@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL") // uses connection pooling
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // uses connection pooling
 }
 
 model User {
@@ -20,17 +20,36 @@ model User {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   UserDetail UserDetail?
+  groups     Group[]     @relation("UserGroups")
 
   @@map("users")
 }
 
 model UserDetail {
-  id          Int     @id @default(autoincrement())
-  fullName    String? @map("full_name")
-  phoneNumber String? @map("phone_number")
+  id          Int       @id @default(autoincrement())
+  fullName    String?   @map("full_name")
+  phoneNumber String?   @map("phone_number")
   age         Int?
-  user        User?   @relation(fields: [userId], references: [id])
-  userId      Int     @unique @map("user_id")
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      Int       @unique @map("user_id")
+  Message     Message[]
 
   @@map("user_details")
+}
+
+model Group {
+  id       Int       @id @default(autoincrement())
+  name     String
+  messages Message[]
+  users    User[]    @relation("UserGroups")
+}
+
+model Message {
+  id         Int         @id @default(autoincrement())
+  content    String
+  createdAt  DateTime    @default(now())
+  userDetail UserDetail? @relation(fields: [userId], references: [id])
+  group      Group?      @relation(fields: [groupId], references: [id])
+  userId     Int
+  groupId    Int
 }

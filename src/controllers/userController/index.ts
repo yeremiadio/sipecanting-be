@@ -47,11 +47,11 @@ export const createUserDetailByUserId = async (req: IAuthRequest, res: Response)
         }
         const user = await getUserByIdService(userId);
         if (!user) return res.status(400).json({ error: 'Invalid user ID' });
-        const userDetail = await createUserDetail({ userId: user.id, ...req.body });
+        const userDetail = await createUserDetail({ userId: Number(user.id), ...req.body });
         res.status(201).json(userDetail);
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
-        throw error;
+        console.error('Error:', error);
     }
 };
 
