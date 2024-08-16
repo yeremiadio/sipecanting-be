@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { createArticle as createArticleService, deleteArticleById as deleteArticleByIdService, getArticleById as getArticleByIdService, getArticles as getArticlesService } from '@/services/articleService'
+import { createArticle as createArticleService, deleteArticleById as deleteArticleByIdService, getArticleById as getArticleByIdService, getArticles as getArticlesService, updateArticle as updateArticleService } from '@/services/articleService'
 import { formatResponse } from '@/utils/formatResponse';
 import { Article } from '@prisma/client';
 import { IAuthRequest } from '@/middlewares/authenticateJWT';
@@ -11,6 +11,17 @@ export const createArticle = async (req: IAuthRequest, res: Response) => {
         const { content, title, categoryId } = req.body;
         const data = await createArticleService({ content, title, file: req.file, authorId: userId, categoryId });
         res.status(201).json(data);
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ error: "Failed! Please try again." });
+    }
+}
+export const updateArticleById = async (req: Request, res: Response) => {
+    try {
+        const articleId = req.params.id;
+        if (!articleId) res.status(404).json({ error: "Article not found." });
+        const data = await updateArticleService(Number(articleId), { ...req.body, file: req.file });
+        res.status(200).json(data);
     } catch (error) {
         console.log(error)
         res.status(400).json({ error: "Failed! Please try again." });

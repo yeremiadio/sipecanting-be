@@ -51,8 +51,8 @@ model Article {
   thumbnailImage String?  @map("thumbnail_image")
   authorId       Int      @map("author_id")
   user           User     @relation(fields: [authorId], references: [id])
-  categoryId     Int      @map("category_id")
-  category       Category @relation(fields: [categoryId], references: [id])
+  categoryId     Int?      @map("category_id")
+  category       Category? @relation(fields: [categoryId], references: [id])
 }
 
 model Category {

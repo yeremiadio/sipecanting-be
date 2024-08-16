@@ -12,17 +12,29 @@ export const createArticle = async ({ content, title, file, authorId, categoryId
         const storedFile = await storeFile(file);
         filename = storedFile.filename;
     }
-    console.log(authorId)
     const data = await prisma.article.create({
         data: {
             content,
             title,
             authorId,
-            categoryId,
-            thumbnailImage: filename,
+            categoryId: Number(categoryId),
+            thumbnailImage: filename
         },
     });
     return data;
+};
+
+export const updateArticle = async (id: number, data: Partial<TArticleWithFile>) => {
+    let filename = null;
+    // If a file is uploaded, store it and get the filename
+    if (data.file) {
+        const storedFile = await storeFile(data.file);
+        filename = storedFile.filename;
+    }
+    return prisma.article.update({
+        where: { id },
+        data: { ...data, categoryId: Number(data.categoryId), thumbnailImage: filename, },
+    });
 };
 
 export const getArticles = async (): Promise<Article[]> => {
