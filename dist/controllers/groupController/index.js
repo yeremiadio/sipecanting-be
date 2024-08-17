@@ -3,10 +3,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteGroupById = exports.getGroupById = exports.getGroups = exports.updateGroupMembers = exports.createGroup = void 0;
 const groupService_1 = require("../../services/groupService/index.js");
 const formatResponse_1 = require("../../utils/formatResponse.js");
+const userService_1 = require("../../services/userService/index.js");
 const createGroup = async (req, res) => {
     try {
-        const { name, userIds } = req.body;
-        const group = await (0, groupService_1.createGroup)(name, userIds);
+        const { name } = req.body;
+        /**
+         * @todo refactor this soon with update group member select
+         */
+        const users = await (0, userService_1.getAllUsers)();
+        const ids = users.map((item) => item.id);
+        const group = await (0, groupService_1.createGroup)(name, ids);
         res.status(201).json(group);
     }
     catch (error) {

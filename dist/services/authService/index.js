@@ -10,12 +10,23 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const JWT_SECRET = process.env.JWT_SECRET ?? 'your_jwt_secret';
 const registerUser = async (email, password) => {
     const hashedPassword = await bcryptjs_1.default.hash(password, 10);
-    return prisma_1.default.user.create({
+    await prisma_1.default.user.create({
         data: {
             email,
             password: hashedPassword,
         },
     });
+    const loggedUser = await prisma_1.default.user.findUnique({ where: { email } });
+    if (!loggedUser || !(await bcryptjs_1.default.compare(password, loggedUser.password))) {
+        throw new Error('Invalid email or password');
+    }
+    return {
+        token: jsonwebtoken_1.default.sign({ userId: loggedUser.id }, JWT_SECRET, { expiresIn: '1h' }),
+        id: loggedUser.id,
+        email: loggedUser.email,
+        createdAt: loggedUser.createdAt,
+        updatedAt: loggedUser.updatedAt,
+    };
 };
 exports.registerUser = registerUser;
 const loginUser = async (email, password) => {

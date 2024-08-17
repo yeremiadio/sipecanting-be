@@ -16,6 +16,7 @@ const createUserDetail = async (data) => {
             phoneNumber: data.phoneNumber,
             userId: data.userId,
             fullName: data.fullName,
+            shortName: data.shortName,
         }
     });
 };

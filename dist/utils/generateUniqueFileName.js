@@ -17,6 +17,8 @@ const shortenUUID = (uuid) => {
  * @returns A unique filename with a timestamp and the same extension as the original file.
  */
 const generateUniqueFilename = (originalName) => {
+    if (!originalName)
+        return "";
     const extension = path_1.default.extname(originalName); // Get the original file extension
     const baseName = path_1.default.basename(originalName, extension).replace(/ /g, "_"); // Get the file name without extension
     const fullUUID = (0, uuid_1.v4)(); // Generate a UUID

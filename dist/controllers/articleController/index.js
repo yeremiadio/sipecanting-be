@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteArticleById = exports.getArticleById = exports.getArticles = exports.createArticle = void 0;
+exports.deleteArticleById = exports.getArticleById = exports.getArticles = exports.updateArticleById = exports.createArticle = void 0;
 const articleService_1 = require("../../services/articleService/index.js");
 const formatResponse_1 = require("../../utils/formatResponse.js");
 const createArticle = async (req, res) => {
@@ -8,8 +8,8 @@ const createArticle = async (req, res) => {
         if (!req.user || !req.user.id)
             res.status(400).json({ error: "User is missing! Please try again" });
         const userId = req.user?.id ?? 0;
-        const { content, title } = req.body;
-        const data = await (0, articleService_1.createArticle)({ content, title, file: req.file, authorId: userId });
+        const { content, title, categoryId, caption, } = req.body;
+        const data = await (0, articleService_1.createArticle)({ content, title, authorId: userId, categoryId, caption }, req.file);
         res.status(201).json(data);
     }
     catch (error) {
@@ -18,6 +18,23 @@ const createArticle = async (req, res) => {
     }
 };
 exports.createArticle = createArticle;
+const updateArticleById = async (req, res) => {
+    try {
+        const { content, title, categoryId, caption } = req.body;
+        const articleId = req.params.id;
+        if (!articleId)
+            res.status(404).json({ error: "Article not found." });
+        const data = await (0, articleService_1.updateArticle)(Number(articleId), {
+            content, title, categoryId, caption
+        }, req.file);
+        res.status(200).json(data);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(400).json({ error: "Failed! Please try again." });
+    }
+};
+exports.updateArticleById = updateArticleById;
 const getArticles = async (_, res) => {
     try {
         const data = await (0, articleService_1.getArticles)();

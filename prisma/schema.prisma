@@ -50,6 +50,7 @@ model Article {
   updatedAt      DateTime  @default(now())
   title          String    @map("title")
   content        String
+  caption        String?
   thumbnailImage String?   @map("thumbnail_image")
   authorId       Int       @map("author_id")
   user           User      @relation(fields: [authorId], references: [id])

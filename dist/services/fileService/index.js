@@ -1,40 +1,42 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFile = exports.storeMultipleFiles = exports.storeFile = void 0;
+const cloudinaryConfig_1 = __importDefault(require("../../utils/cloudinaryConfig.js"));
 const generateUniqueFileName_1 = require("../../utils/generateUniqueFileName.js");
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
 // Store the file's binary data in the database
 const storeFile = async (file) => {
-    const storedFile = await prisma.file.create({
-        data: {
-            filename: (0, generateUniqueFileName_1.generateUniqueFilename)(file.originalname),
-            data: file.buffer, // Save the binary data
-        },
-    });
-    return storedFile;
+    if (!file)
+        throw new Error('File not found');
+    try {
+        const cloudinary = await (0, cloudinaryConfig_1.default)();
+        const storedFile = await cloudinary.uploader.upload(file.path, {
+            filename_override: (0, generateUniqueFileName_1.generateUniqueFilename)(file.filename),
+            folder: 'sipecanting',
+            eager_async: true,
+            resource_type: 'auto',
+        });
+        return storedFile;
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Failed upload to the server");
+    }
 };
 exports.storeFile = storeFile;
 // Store the binary data for multiple files in the database with unique filenames
-const storeMultipleFiles = async (files) => {
-    const storedFiles = await prisma.$transaction(files.map((file) => prisma.file.create({
-        data: {
-            filename: (0, generateUniqueFileName_1.generateUniqueFilename)(file.originalname),
-            data: file.buffer,
-        },
-    })));
-    return storedFiles;
-};
+const storeMultipleFiles = async (files) => files.map(async (file) => await (0, exports.storeFile)(file));
 exports.storeMultipleFiles = storeMultipleFiles;
 // Retrieve the file's binary data from the database
 const getFile = async (fileName) => {
-    const file = await prisma.file.findUnique({
-        where: { filename: fileName },
-    });
+    const cloudinary = await (0, cloudinaryConfig_1.default)();
+    const file = cloudinary.url(fileName, { width: 100, height: 150, crop: "fill" });
     if (!file) {
         throw new Error('File not found');
     }
-    return file.data;
+    return file;
 };
 exports.getFile = getFile;
 //# sourceMappingURL=index.js.map

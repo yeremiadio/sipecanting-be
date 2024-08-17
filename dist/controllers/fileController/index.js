@@ -17,7 +17,7 @@ exports.getFile = getFile;
 const storeSingleFile = async (req, res) => {
     try {
         const storedFile = await (0, fileService_1.storeFile)(req.file);
-        res.status(200).json({ message: 'File uploaded successfully', file: storedFile });
+        res.status(200).json({ message: 'File uploaded successfully', file: storedFile?.secure_url });
     }
     catch (error) {
         res.status(400).json({ message: "Error! Please try again." });

@@ -8,10 +8,10 @@
     "build": "rimraf dist && tsc --noEmit false && tsc-alias",
     "postinstall": "prisma generate && prisma migrate deploy",
     "prisma:vercel-build": "prisma generate && prisma migrate deploy",
-    "prisma:migrate-dev": "prisma migrate dev",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "ts.check": "tsc --project tsconfig.json",
-    "add-build": "git add dist"
+    "add-build": "git add dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "reset-seed": "ts-node prisma/seed.ts"
   },
   "keywords": [],
   "pre-commit": [
