@@ -6,12 +6,23 @@ const JWT_SECRET = process.env.JWT_SECRET ?? 'your_jwt_secret';
 
 export const registerUser = async (email: string, password: string) => {
     const hashedPassword = await bcrypt.hash(password, 10);
-    return prisma.user.create({
+    await prisma.user.create({
         data: {
             email,
             password: hashedPassword,
         },
     });
+    const loggedUser = await prisma.user.findUnique({ where: { email } });
+    if (!loggedUser || !(await bcrypt.compare(password, loggedUser.password))) {
+        throw new Error('Invalid email or password');
+    }
+    return {
+        token: jwt.sign({ userId: loggedUser.id }, JWT_SECRET, { expiresIn: '1h' }),
+        id: loggedUser.id,
+        email: loggedUser.email,
+        createdAt: loggedUser.createdAt,
+        updatedAt: loggedUser.updatedAt,
+    };
 };
 
 export const loginUser = async (email: string, password: string) => {

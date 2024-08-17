@@ -2,9 +2,9 @@ import prisma from "@/utils/prisma";
 import { Article } from "@prisma/client";
 import { storeCloudinaryFile } from "@/utils/storeCloudinaryFile";
 
-type TArticleWithFile = Pick<Article, 'content' | 'title' | 'authorId' | 'categoryId'>
+type TArticleWithFile = Pick<Article, 'content' | 'title' | 'authorId' | 'categoryId' | 'caption'>
 
-export const createArticle = async ({ content, title, authorId, categoryId }: TArticleWithFile, file: Express.Multer.File) => {
+export const createArticle = async ({ content, title, authorId, categoryId, caption }: TArticleWithFile, file: Express.Multer.File) => {
     try {
         const fileResponse = await storeCloudinaryFile(file!);
         const data = await prisma.article.create({
@@ -12,6 +12,7 @@ export const createArticle = async ({ content, title, authorId, categoryId }: TA
                 content,
                 title,
                 authorId,
+                caption,
                 categoryId: Number(categoryId),
                 thumbnailImage: fileResponse?.secure_url
             },
@@ -26,6 +27,7 @@ export const createArticle = async ({ content, title, authorId, categoryId }: TA
 export const updateArticle = async (id: number, { categoryId, content,
     title,
     authorId,
+    caption
 }: Partial<TArticleWithFile>, file: Express.Multer.File) => {
     try {
         const fileResponse = await storeCloudinaryFile(file);
@@ -35,6 +37,7 @@ export const updateArticle = async (id: number, { categoryId, content,
                 content,
                 title,
                 authorId,
+                caption,
                 categoryId: Number(categoryId),
                 thumbnailImage: fileResponse?.secure_url,
             },

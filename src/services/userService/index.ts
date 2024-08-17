@@ -13,6 +13,7 @@ export const createUserDetail = async (data: UserDetail) => {
             phoneNumber: data.phoneNumber,
             userId: data.userId,
             fullName: data.fullName,
+            shortName: data.shortName,
         }
     });
 };
