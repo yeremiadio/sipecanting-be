@@ -2,11 +2,17 @@ import { Request, Response } from 'express';
 import { createGroup as createGroupService, updateGroupMembers as updateGroupMembersService, deleteGroupById as deleteGroupByIdService, getAllGroups, getGroupById as getGroupByIdService } from "@/services/groupService";
 import { formatResponse } from '@/utils/formatResponse';
 import { Group } from '@prisma/client';
+import { getAllUsers } from '@/services/userService';
 
 export const createGroup = async (req: Request, res: Response) => {
     try {
-        const { name, userIds } = req.body;
-        const group = await createGroupService(name, userIds);
+        const { name } = req.body;
+        /**
+         * @todo refactor this soon with update group member select
+         */
+        const users = await getAllUsers()
+        const ids = users.map((item) => item.id)
+        const group = await createGroupService(name, ids);
         res.status(201).json(group);
     } catch (error) {
         console.log(error)

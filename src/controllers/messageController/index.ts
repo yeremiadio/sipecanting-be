@@ -4,7 +4,6 @@ import prisma from '@/utils/prisma';
 import { Response } from 'express';
 
 export const sendMessage = async (req: IAuthRequest, res: Response) => {
-    console.log(req.body, req.user)
     try {
         const { content, groupId } = req.body;
         if (!req.user || !req.user.id) res.status(400).json({ error: "User is missing! Please try again" })
