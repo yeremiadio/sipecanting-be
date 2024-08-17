@@ -11,13 +11,14 @@
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "reset-seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts"
   },
   "keywords": [],
   "pre-commit": [
     "ts.check",
     "build",
-    "add-build"
+    "add-build",
+    "seed"
   ],
   "author": "",
   "license": "ISC",
