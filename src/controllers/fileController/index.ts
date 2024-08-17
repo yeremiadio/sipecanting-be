@@ -17,7 +17,7 @@ export const getFile = async (req: Request, res: Response) => {
 export const storeSingleFile = async (req: Request, res: Response) => {
     try {
         const storedFile = await storeFile(req.file!);
-        res.status(200).json({ message: 'File uploaded successfully', file: storedFile });
+        res.status(200).json({ message: 'File uploaded successfully', file: storedFile?.secure_url });
     } catch (error) {
         res.status(400).json({ message: "Error! Please try again." });
         throw new Error("File not found")
@@ -26,7 +26,7 @@ export const storeSingleFile = async (req: Request, res: Response) => {
 
 export const storeMultipleFiles = async (req: Request, res: Response) => {
     try {
-        const storedFiles = await storeMultipleFilesService(req.files as Express.Multer.File[]);
+        const storedFiles = await storeMultipleFilesService(req.files! as Express.Multer.File[]);
         res.status(200).json({ message: 'Files uploaded successfully', files: storedFiles });
     } catch (error) {
         res.status(400).json({ message: "Error! Please try again." });

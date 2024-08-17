@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
+import { Nullable } from '@/types';
 
 // Helper function to convert UUID to a shorter base64 string
 const shortenUUID = (uuid: string): string => {
@@ -12,7 +13,8 @@ const shortenUUID = (uuid: string): string => {
  * @param originalName The original filename including extension.
  * @returns A unique filename with a timestamp and the same extension as the original file.
  */
-export const generateUniqueFilename = (originalName: string): string => {
+export const generateUniqueFilename = (originalName: Nullable<string>): string => {
+    if (!originalName) return ""
     const extension = path.extname(originalName); // Get the original file extension
     const baseName = path.basename(originalName, extension).replace(/ /g, "_"); // Get the file name without extension
     const fullUUID = uuidv4(); // Generate a UUID

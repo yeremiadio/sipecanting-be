@@ -1,27 +1,49 @@
-import { Nullable } from "@/types";
 import prisma from "@/utils/prisma";
 import { Article } from "@prisma/client";
-import { storeFile } from "../fileService";
+import { storeCloudinaryFile } from "@/utils/storeCloudinaryFile";
 
-type TArticleWithFile = Pick<Article, 'content' | 'title' | 'authorId'> & Nullable<{ file: Express.Multer.File | undefined }>
+type TArticleWithFile = Pick<Article, 'content' | 'title' | 'authorId' | 'categoryId'>
 
-export const createArticle = async ({ content, title, file, authorId }: TArticleWithFile) => {
-    let filename = null;
-    // If a file is uploaded, store it and get the filename
-    if (file) {
-        const storedFile = await storeFile(file);
-        filename = storedFile.filename;
+export const createArticle = async ({ content, title, authorId, categoryId }: TArticleWithFile, file: Express.Multer.File) => {
+    try {
+        const fileResponse = await storeCloudinaryFile(file!);
+        const data = await prisma.article.create({
+            data: {
+                content,
+                title,
+                authorId,
+                categoryId: Number(categoryId),
+                thumbnailImage: fileResponse?.secure_url
+            },
+        });
+        return data;
+    } catch (error) {
+        console.log(error)
+        throw new Error("Failed")
     }
-    console.log(authorId)
-    const data = await prisma.article.create({
-        data: {
-            content,
-            title,
-            authorId,
-            thumbnailImage: filename,
-        },
-    });
-    return data;
+};
+
+export const updateArticle = async (id: number, { categoryId, content,
+    title,
+    authorId,
+}: Partial<TArticleWithFile>, file: Express.Multer.File) => {
+    try {
+        const fileResponse = await storeCloudinaryFile(file);
+        const data = prisma.article.update({
+            where: { id },
+            data: {
+                content,
+                title,
+                authorId,
+                categoryId: Number(categoryId),
+                thumbnailImage: fileResponse?.secure_url,
+            },
+        });
+        return data
+    } catch (error) {
+        console.log(error)
+        throw new Error("Error while updating article. Please try again")
+    }
 };
 
 export const getArticles = async (): Promise<Article[]> => {

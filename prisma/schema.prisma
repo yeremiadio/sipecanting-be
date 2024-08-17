@@ -24,34 +24,45 @@ model User {
   UserDetail UserDetail?
   groups     Group[]     @relation("UserGroups")
   articles   Article[]
+  Message    Message[]
+
   @@map("users")
 }
 
 model UserDetail {
-  id               Int       @id @default(autoincrement())
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @default(now())
-  fullName         String?   @map("full_name")
-  shortName        String?   @map("short_name")
-  phoneNumber      String?   @map("phone_number")
-  age              Int?
-  user             User?     @relation(fields: [userId], references: [id])
-  userId           Int       @unique @map("user_id")
-  Message          Message[]
-  profileImageName String?   @map("profile_image_name")
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
+  fullName     String?   @map("full_name")
+  shortName    String?   @map("short_name")
+  phoneNumber  String?   @map("phone_number")
+  age          Int?
+  user         User?     @relation(fields: [userId], references: [id])
+  userId       Int       @unique @map("user_id")
+  profileImage String?   @map("profile_image")
 
   @@map("user_details")
 }
 
 model Article {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now())
-  title          String   @map("title")
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now())
+  title          String    @map("title")
   content        String
-  thumbnailImage String?  @map("thumbnail_image")
-  authorId       Int      @map("author_id")
-  user           User     @relation(fields: [authorId], references: [id])
+  thumbnailImage String?   @map("thumbnail_image")
+  authorId       Int       @map("author_id")
+  user           User      @relation(fields: [authorId], references: [id])
+  categoryId     Int?      @map("category_id")
+  category       Category? @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @map("category_name")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  Article   Article[]
 }
 
 model Group {
@@ -64,19 +75,12 @@ model Group {
 }
 
 model Message {
-  id         Int         @id @default(autoincrement())
-  content    String
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @default(now())
-  userDetail UserDetail? @relation(fields: [userId], references: [id])
-  group      Group?      @relation(fields: [groupId], references: [id])
-  userId     Int
-  groupId    Int
-}
-
-model File {
-  filename  String   @unique
-  data      Bytes
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id           Int         @id @default(autoincrement())
+  content      String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now())
+  user         User?       @relation(fields: [userId], references: [id])
+  group        Group?      @relation(fields: [groupId], references: [id])
+  userId       Int
+  groupId      Int
 }

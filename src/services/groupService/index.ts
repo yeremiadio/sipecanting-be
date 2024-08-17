@@ -38,7 +38,13 @@ export const getAllGroups = async (): Promise<Group[]> => {
                 select: {
                     id: true,
                 }
-            }
+            },
+            messages: {
+                orderBy: {
+                    createdAt: 'desc',
+                },
+                take: 1, // Only take the newest message
+            },
         }
     });
 };
@@ -49,10 +55,20 @@ export const getGroupById = async (id: number) => {
         include: {
             users: { select: { id: true } },
             messages: {
+                orderBy: {
+                    createdAt: 'desc',
+                },
                 include: {
-                    userDetail: {
+                    user: {
                         select: {
-                            fullName: true,
+                            UserDetail: {
+                                select: {
+                                    fullName: true, shortName: true,
+                                    profileImage: true,
+                                    userId: true,
+                                }
+                            },
+
                         }
                     },
                 },
