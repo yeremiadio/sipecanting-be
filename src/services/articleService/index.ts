@@ -52,6 +52,7 @@ export const updateArticle = async (id: number, { categoryId, content,
 export const getArticles = async (): Promise<Article[]> => {
     return prisma.article.findMany({
         include: {
+            category: true,
             user: {
                 select: {
                     email: true,
@@ -71,6 +72,7 @@ export const getArticleById = async (id: number) => {
     const article = await prisma.article.findUnique({
         where: { id },
         include: {
+            category: true,
             user: {
                 select: {
                     email: true,
