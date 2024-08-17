@@ -1,6 +1,7 @@
 import prisma from "@/utils/prisma";
 
 export const sendMessage = async (content: string, groupId: number, userId: number) => {
+    
     const message = await prisma.message.create({
         data: {
             content,
@@ -8,7 +9,7 @@ export const sendMessage = async (content: string, groupId: number, userId: numb
             userId,
         },
         include: {
-            userDetail: true,
+            user: true,
             group: true,
         },
     });
